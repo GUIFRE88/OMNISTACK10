@@ -1,37 +1,25 @@
 // Importa apenas a parte de Routes do Express
 const { Router } = require('express')
-
-// Importa Axios para que seja possÌvel acessar apis externas.
-const axios = require('axios')
-
-// Faz a utilizaÁ„o das rotas.
+const DevController = require('./src/controllers/DevController')
+// Faz a utiliza√ß√£o das rotas.
 const routes = Router()
 
 // Cria primeira rota
-// request - RequisiÁ„o enviada.
+// request - Requisi√ß√£o enviada.
 // response - Resposta retornada.
 
-// Tipos de Par‚metros dentro do Express.
-// Query Params: … utilizado apenas no mÈtodo GET, para filtrar/paginaÁıes de informaÁıes. (request.query)
-// Route Params: … utilizado no mÈtodo PUT e DELETE, para identificar um recurso que ser· alterado/deletado. (request.params)
-// Body: … utilizado principlamente no POST, s„o as informaÁıes que ser„o gravadas. (request.body)
-routes.post('/devs', async (request, response) => {
+// Tipos de Par√¢metros dentro do Express.
+// Query Params: √© utilizado apenas no metodo GET, para filtrar/pagina√ß√µes de informa√ß√µes. (request.query)
+// Route Params: √© utilizado no metodo PUT e DELETE, para identificar um recurso que ser√£o alterado/deletado. (request.params)
+// Body: √© utilizado principlamente no POST, s√£o as informa√ß√µes que ser√£o gravadas. (request.body)
+routes.get('/devs', DevController.index)
+routes.post('/devs', DevController.store)
 
-    const { github_username } = request.body
+// metodos HTTP que ser√£o utilizados.
+// get - Busca informa√ß√£o
+// post - Criar informa√ß√£o
+// put - Alterar informa√ß√£o
+// delete - Excluir informa√ß√£o
 
-    // Verifica API do github passando o usu·rio. 
-    const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`)
-
-    console.log(apiResponse.data)
-
-    return response.json({ message: 'Hello Teste'})
-})
-
-// MÈtodos HTTP que ser„o utilizados.
-// get - Busca informaÁ„o
-// post - Criar informaÁ„o
-// put - Alterar informaÁ„o
-// delete - Excluir informaÁ„o
-
-// Exporta as rotas para que fique visÌvel ao APP
+// Exporta as rotas para que fique visivel ao APP
 module.exports = routes
