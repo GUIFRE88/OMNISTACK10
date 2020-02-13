@@ -4,6 +4,9 @@ const axios = require('axios')
 // Impor Schema do banco.
 const Dev = require('../models/Dev')
 
+// Quebra a string para array.
+const parseStringAsArray = require('./utils/parseStringAsArray')
+
 // Nome de métodos mais usados.
 // index - Mostrar uma lista de dados.
 // show - Mostra apenas um registro.
@@ -34,7 +37,7 @@ module.exports = {
             const { name = login , avatar_url, bio } = apiResponse.data
 
             // Quebra o valor String em array. E retira os espaços em branco com trim.
-            const techsArray = techs.split(',').map(tech => tech.trim())
+            const techsArray = parseStringAsArray(techs)
 
             const location = {
                 type: 'Point',

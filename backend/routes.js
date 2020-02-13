@@ -1,6 +1,7 @@
 // Importa apenas a parte de Routes do Express
 const { Router } = require('express')
 const DevController = require('./src/controllers/DevController')
+const SearchController = require('./src/controllers/SearchController')
 // Faz a utilização das rotas.
 const routes = Router()
 
@@ -14,6 +15,8 @@ const routes = Router()
 // Body: é utilizado principlamente no POST, são as informações que serão gravadas. (request.body)
 routes.get('/devs', DevController.index)
 routes.post('/devs', DevController.store)
+
+routes.get('/search', SearchController.index)
 
 // metodos HTTP que serão utilizados.
 // get - Busca informação
