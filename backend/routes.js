@@ -15,6 +15,8 @@ const routes = Router()
 // Body: é utilizado principlamente no POST, são as informações que serão gravadas. (request.body)
 routes.get('/devs', DevController.index)
 routes.post('/devs', DevController.store)
+routes.delete('/devs', DevController.destroy)
+routes.put('/devs', DevController.update)
 
 routes.get('/search', SearchController.index)
 

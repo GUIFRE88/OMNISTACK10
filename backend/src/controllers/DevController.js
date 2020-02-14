@@ -58,7 +58,29 @@ module.exports = {
    
 
       return response.json(dev)
-    }
+    },
 
+    async update(request, response){
+      
+      const { github_username } = request.body
+
+      // Busca todos os registros dentro da Schema
+      const devs = await Dev.updateOne({ github_username },{
+          name: "Frede",
+          bio: "Teste de Bio"
+      })
+
+        return response.json({help: "Arquivo alterado."})
+    }, 
+
+    async destroy(request, response){
+
+        const { github_username } = request.body
+
+          // Busca todos os registros dentro da Schema
+        const devs = await Dev.deleteOne({ github_username })
+
+        return response.json({help: 'Arquivo deletado.'})
+    },
 
 }
