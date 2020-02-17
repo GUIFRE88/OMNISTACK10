@@ -1,5 +1,0 @@
-Horário do vídeo que foi parado NodeJS:
-   - Terminado.
-
-Horário do vídeo que foi parado ReactJS:
-00:00:00
