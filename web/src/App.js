@@ -4,6 +4,7 @@ import React from 'react';
 import './global.css'
 import './App.css'
 import './SideBar.css'
+import './Main.css'
 
 // Componente -> É um bloco isolado de HTML, CSS e JS, o qual não interfere no restante da aplicação.
 // Propriedade -> Informações que um componente PAI passa para o componente FILHO. 
@@ -59,9 +60,34 @@ function App() {
                 <span>ReactJS, NodeJs, React Native</span>
               </div>
             </header>
-            <p>Teste de Biografia do GitHub</p>
+            <p>Teste de Biografia do GitHub  CTO da FredsDevs</p>
             <a href="https://github.com/GUIFRE88">Acessar perfil no GitHub</a>
           </li>
+
+          <li className="dev-item">
+            <header>
+              <img src="https://avatars1.githubusercontent.com/u/36928790?s=460&amp;v=4" alt="Guilherme Freudenburg"/>
+              <div className="user-info">
+                <strong>Guilherme Freudenburg</strong>
+                <span>ReactJS, NodeJs, React Native</span>
+              </div>
+            </header>
+            <p>Teste de Biografia do GitHub  CTO da FredsDevs</p>
+            <a href="https://github.com/GUIFRE88">Acessar perfil no GitHub</a>
+          </li>
+
+          <li className="dev-item">
+            <header>
+              <img src="https://avatars1.githubusercontent.com/u/36928790?s=460&amp;v=4" alt="Guilherme Freudenburg"/>
+              <div className="user-info">
+                <strong>Guilherme Freudenburg</strong>
+                <span>ReactJS, NodeJs, React Native</span>
+              </div>
+            </header>
+            <p>Teste de Biografia do GitHub  CTO da FredsDevs</p>
+            <a href="https://github.com/GUIFRE88">Acessar perfil no GitHub</a>
+          </li>
+
         </ul>
       </main>
 
