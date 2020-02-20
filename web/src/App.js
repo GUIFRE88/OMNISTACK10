@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+//useEffect - Dispara função toda vez que um valor for alterado. 
 
 // Importações de styles
 import './global.css'
 import './App.css'
 import './SideBar.css'
 import './Main.css'
+
+// Importa a conexão com a API.
+import api from './services/api'
+
+// Importa o componente.
+import DevItem from './components/DevItem'
+import DevForm from './components/DevForm'
 
 // Componente -> É um bloco isolado de HTML, CSS e JS, o qual não interfere no restante da aplicação.
 // Propriedade -> Informações que um componente PAI passa para o componente FILHO. 
@@ -17,77 +25,46 @@ import './Main.css'
 
 function App() {
 
+  // Cria variaveis com estado para setar os valores. 
+  const [devs, setDevs] = useState([])
+
+  useEffect(()=>{
+    async function loadDevs(){
+      const response = await api.get('/devs') // Busca a api get/devs
+
+      setDevs(response.data) // Seta todos os dados que vieram da api
+
+    }
+    loadDevs() // Chama função para executar através do useEffect
+  }, [])
+
+  // Função do Botão Submit
+  // e -> Representa o evento.
+  async function handleAddDev(data){
+
+    const reponse = await api.post('/devs',data)
+   
+     // Copia todos os devs ja existentes na variavel e adiciona o que está em tela.
+    // Desta forma atualizará a tela.
+    setDevs([...devs, reponse.data])
+
+  }
+
   return (
     <div id="app">
 
       <aside>
         <strong>Cadastrar</strong>
-        <form>
-
-          <div className="input-block">
-            <label htmlFor="github_username">Usuário</label>
-            <input name="github_username" id="github_username" required/>
-          </div>
-
-          <div className="input-block">
-            <label htmlFor="techs">Tecnlogias</label>
-            <input name="techs" id="techs" required/>
-          </div>
-
-          <div className="input-group">
-            <div class="input-block">
-              <label htmlFor="latitude">Latitude</label>
-              <input name="latitude" id="latitude" required/>
-            </div>
-            <div class="input-block">
-              <label htmlFor="longitude">Longitude</label>
-              <input name="longitude" id="longitude" required/>
-            </div>
-          </div>
-
-          <button type="submit">Salvar</button>
-
-        </form>
+          < DevForm onSubmit={handleAddDev}/>
       </aside>
 
       <main>
         <ul>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars1.githubusercontent.com/u/36928790?s=460&amp;v=4" alt="Guilherme Freudenburg"/>
-              <div className="user-info">
-                <strong>Guilherme Freudenburg</strong>
-                <span>ReactJS, NodeJs, React Native</span>
-              </div>
-            </header>
-            <p>Teste de Biografia do GitHub  CTO da FredsDevs</p>
-            <a href="https://github.com/GUIFRE88">Acessar perfil no GitHub</a>
-          </li>
-
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars1.githubusercontent.com/u/36928790?s=460&amp;v=4" alt="Guilherme Freudenburg"/>
-              <div className="user-info">
-                <strong>Guilherme Freudenburg</strong>
-                <span>ReactJS, NodeJs, React Native</span>
-              </div>
-            </header>
-            <p>Teste de Biografia do GitHub  CTO da FredsDevs</p>
-            <a href="https://github.com/GUIFRE88">Acessar perfil no GitHub</a>
-          </li>
-
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars1.githubusercontent.com/u/36928790?s=460&amp;v=4" alt="Guilherme Freudenburg"/>
-              <div className="user-info">
-                <strong>Guilherme Freudenburg</strong>
-                <span>ReactJS, NodeJs, React Native</span>
-              </div>
-            </header>
-            <p>Teste de Biografia do GitHub  CTO da FredsDevs</p>
-            <a href="https://github.com/GUIFRE88">Acessar perfil no GitHub</a>
-          </li>
-
+          
+          {devs.map( dev => (
+            < DevItem key={dev._id} dev={dev}/>
+          ))}
+      
         </ul>
       </main>
 
