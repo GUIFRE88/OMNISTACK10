@@ -4,7 +4,7 @@ import MapView, { Marker, Callout } from 'react-native-maps'
 
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location'
 
-function Main(){
+function Main({navigation}){
 
     const [currentRegion, setCurrentRegion] = useState(null) // Cria estado para a latitude e longitude
 
