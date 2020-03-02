@@ -5,4 +5,4 @@ Horário do vídeo que foi parado ReactJS:
     - Terminado
 
 Horário do vídeo que foi parado React Native:
-01:16:00
+01:29:00

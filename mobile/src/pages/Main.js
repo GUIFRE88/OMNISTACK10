@@ -6,7 +6,11 @@ import { requestPermissionsAsync, getCurrentPositionAsync, stopLocationUpdatesAs
 
 import { MaterialIcons } from '@expo/vector-icons'
 
+import api from '../services/api'
+
 function Main({navigation}){
+
+    const [devs, setDevs] = useState([]) // Cria estado para dados.
 
     const [currentRegion, setCurrentRegion] = useState(null) // Cria estado para a latitude e longitude
 
@@ -32,6 +36,26 @@ function Main({navigation}){
         loadInitialPosition() // Executa a função assim que o useEffect for executado. 
     },[])
 
+    async function loadDevs(){
+        const {latitude, longitude} = currentRegion
+
+        const response = await api.get('/search',{
+           params: {
+               latitude,
+               longitude,
+               techs: 'ReactJs'
+           } 
+        })
+
+        setDevs(response.data.devs)
+        
+    }
+
+    // Preenche a região conforme usuário mexer no mapa.
+    function handleRegionChanged(region){
+        setCurrentRegion(region)
+    }
+
     // Verifica se a localização está nula.
     if(!currentRegion){
         return null
@@ -39,19 +63,26 @@ function Main({navigation}){
 
     return (
         <>
-        <MapView  initialRegion={currentRegion} style={styles.map}>
-        <Marker coordinate={{ latitude: -27.2111164, longitude: -49.6374491}}>
-            <Image style={styles.avatar} source={ { uri: 'https://avatars1.githubusercontent.com/u/36928790?s=460&v=4'} }/>
-            <Callout onPress={ ()=>{ // Cria função de navegação ao ter o click
-                navigation.navigate('Profile', { github_username: 'GUIFRE88' } ) // Chama a tela profile e passa parâmetros. 
-            } }>
-                <View style={styles.callout}>
-                    <Text style={styles.devName}>Guilherme Freudenburg</Text>
-                    <Text style={styles.devBio}>Desenvolvedor</Text>
-                    <Text style={styles.devTechs}>Advpl, React, Nodejs</Text>
-                </View>
-            </Callout>
-        </Marker>
+        <MapView onRegionChangeComplete={handleRegionChanged} 
+                 initialRegion={currentRegion} 
+                 style={styles.map}>
+        )
+
+        {devs.map(dev => (
+            <Marker key={dev._id} coordinate={{ latitude: dev.location.cordinates[1], longitude: dev.location.cordinates[0]}}>
+                <Image style={styles.avatar} source={ { uri: dev.avatar_url} }/>
+                <Callout onPress={ ()=>{ // Cria função de navegação ao ter o click
+                    navigation.navigate('Profile', { github_username: dev.github_username } ) // Chama a tela profile e passa parâmetros. 
+                } }>
+                    <View style={styles.callout}>
+                        <Text style={styles.devName}>{dev.name}</Text>
+                        <Text style={styles.devBio}>{dev.bio}</Text>
+                        <Text style={styles.devTechs}>{dev.techs.join(', ')}</Text>
+                    </View>
+                </Callout>
+            </Marker>
+        ) )}
+
         </MapView>
         <View style={styles.searchForm}>
             <TextInput  style={styles.searchInput}
@@ -60,7 +91,7 @@ function Main({navigation}){
                         autoCapitalize="words"
                         autoCorrect={false}
             />
-            <TouchableOpacity onPress={ () => {} } style={styles.loadButton}>
+            <TouchableOpacity onPress={ loadDevs } style={styles.loadButton}>
                 <MaterialIcons name="my-location"  size={20} color="#FFF"/>
             </TouchableOpacity>
         </View>
@@ -98,7 +129,7 @@ const styles = StyleSheet.create({
     },
     searchForm:{
         position: 'absolute',
-        bottom: 20,
+        top: 20,
         left: 20,
         right: 20,
         zIndex: 5,
