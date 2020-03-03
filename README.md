@@ -14,6 +14,12 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-O DevRadar é um projeto que visa conectar desenvolvedores próximos a você que trabalham com as mesmas tecnologias.
+O DevRadar é um projeto que visa conectar desenvolvedores próximos a você que trabalham com as mesmas tecnologias.O cadastro dos desenvolvedores é feito apenas informando o usuário do GitHub, será feito uma busca na API do Github para buscar demais informações.
+A localização do usuário terá como origem a localização do navegador. 
 
+##  💻 Exemplo página WEB
+![alt text](https://github.com/GUIFRE88/OMNISTACK10/blob/master/pictures/web.PNG)
+
+##  💻 Exemplo retorno API
+![alt text](https://github.com/GUIFRE88/OMNISTACK10/blob/master/pictures/Back.PNG)
 ----
