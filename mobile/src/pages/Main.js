@@ -7,12 +7,16 @@ import { requestPermissionsAsync, getCurrentPositionAsync, stopLocationUpdatesAs
 import { MaterialIcons } from '@expo/vector-icons'
 
 import api from '../services/api'
+import { connect, disconnect } from '../services/socket'
+import { setupWebsocket } from '../../../backend/src/websocket'
 
 function Main({navigation}){
 
     const [devs, setDevs] = useState([]) // Cria estado para dados.
 
     const [currentRegion, setCurrentRegion] = useState(null) // Cria estado para a latitude e longitude
+
+    const [techs, setTches] = useState('')
 
     useEffect(()=>{
         async function loadInitialPosition(){
@@ -36,6 +40,16 @@ function Main({navigation}){
         loadInitialPosition() // Executa a função assim que o useEffect for executado. 
     },[])
 
+    function setupWebsocket(){
+
+        const {latitude, longitude } = currentRegion
+        connect(
+            latitude,
+            longitude,
+            techs,
+        )
+    }
+
     async function loadDevs(){
         const {latitude, longitude} = currentRegion
 
@@ -43,11 +57,13 @@ function Main({navigation}){
            params: {
                latitude,
                longitude,
-               techs: 'ReactJs'
+               techs
            } 
         })
 
         setDevs(response.data.devs)
+
+        setupWebsocket()
         
     }
 
@@ -66,9 +82,9 @@ function Main({navigation}){
         <MapView onRegionChangeComplete={handleRegionChanged} 
                  initialRegion={currentRegion} 
                  style={styles.map}>
-        )
+        
 
-        {devs.map(dev => (
+        {devs.map( dev => (
             <Marker key={dev._id} coordinate={{ latitude: dev.location.cordinates[1], longitude: dev.location.cordinates[0]}}>
                 <Image style={styles.avatar} source={ { uri: dev.avatar_url} }/>
                 <Callout onPress={ ()=>{ // Cria função de navegação ao ter o click
@@ -90,6 +106,8 @@ function Main({navigation}){
                         placeholderTextColor="#999"
                         autoCapitalize="words"
                         autoCorrect={false}
+                        value={techs}
+                        onChangeText = {text => setTches(text)} 
             />
             <TouchableOpacity onPress={ loadDevs } style={styles.loadButton}>
                 <MaterialIcons name="my-location"  size={20} color="#FFF"/>

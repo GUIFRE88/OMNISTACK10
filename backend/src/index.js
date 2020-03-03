@@ -10,8 +10,17 @@ const routes = require('../routes')
 // Importa cors para que o front-end acesse a api em node.
 const cors = require('cors')
 
+// Importa modulo http
+const http = require('http')
+
 // Inicia a aplicação com Express.
 const app = express()  
+
+const server = http.Server(app)
+
+const { setupWebsocket } = require('./websocket')
+
+setupWebsocket(server) // Chama o WebSocket
 
 // Faz a conexão com o AtlasDB
 mongoose.connect('mongodb+srv://omnistack:omnistack@cluster0-0k2bb.mongodb.net/week10?retryWrites=true&w=majority',{
@@ -28,4 +37,4 @@ app.use(cors())
 // Determina as rotas do APP
 app.use(routes)
 
-app.listen(3333)
+server.listen(3333)
